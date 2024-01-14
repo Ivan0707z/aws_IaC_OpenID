@@ -17,7 +17,7 @@ variable "REPOSITORY_URI" {
 }
 
 resource "aws_lightsail_container_service" "flask_application" {
-  name = "flask-app-openid"  # Updated service name to comply with the pattern
+  name = "flask-app"
   power = "nano"
   scale = 1
 
@@ -27,6 +27,7 @@ resource "aws_lightsail_container_service" "flask_application" {
     }
   }
 
+
   tags = {
     version = "1.0.0"
   }
@@ -34,19 +35,19 @@ resource "aws_lightsail_container_service" "flask_application" {
 
 resource "aws_lightsail_container_service_deployment_version" "flask_app_deployment" {
   container {
-    container_name = "flask-application-openid"
+    container_name = "flask-application"
 
     image = "${var.REPOSITORY_URI}:latest"
     
     ports = {
-      # Consistent with the port exposed by the Dockerfile and py
+      # Consistent with the port exposed by the Dockerfile and app.py
       8080 = "HTTP"
     }
   }
 
   public_endpoint {
-    container_name = "flask-application-openid"
-    # Consistent with the port exposed by the Dockerfile and py
+    container_name = "flask-application"
+    # Consistent with the port exposed by the Dockerfile and app.py
     container_port = 8080
 
     health_check {
